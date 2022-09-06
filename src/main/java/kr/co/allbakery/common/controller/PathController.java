@@ -3,6 +3,7 @@ package kr.co.allbakery.common.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import kr.co.allbakery.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import kr.co.allbakery.common.session.SessionData;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class PathController {
@@ -19,6 +24,9 @@ public class PathController {
 
 	@Autowired
 	private SessionData sessionData;
+
+	@Autowired
+	private CustomerService customerService;
 
 	/**
 	 * 메인
@@ -68,7 +76,7 @@ public class PathController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/{folder}/{screen}.all")
-	public String screen(Model model, HttpServletRequest request, @PathVariable("folder") String folder, @PathVariable("screen") String screen) throws Exception {
+	public String screen(Model model, HttpServletRequest request, @PathVariable("folder") String folder, @PathVariable("screen") String screen, @RequestParam Map<String, String> param) throws Exception {
 
 		String screenUrl = folder + "/" + screen;
 		String url = "";
@@ -77,6 +85,10 @@ public class PathController {
 		model.addAttribute("screen", screen);
 		model.addAttribute("screenUri", screenUrl);
 		url= "/views/" + screenUrl;
+
+		// 거래처 리스트 조회
+		List<Map<String, String>> customers = customerService.getCustomerList(param);
+		model.addAttribute("customers", customers);
 
 		return page(url, request, model);
 	}

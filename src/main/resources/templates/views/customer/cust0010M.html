@@ -17,7 +17,7 @@
   <section id="contents">
       <!-- searchArea -->
       <div class="searchArea">
-          <form id="frm">
+          <form id="frm" action="#">
               <input name="cTaxFlag" value="A" type="hidden">
               <ul>
                   <li>
@@ -83,47 +83,47 @@
       <table id="custTable">
         <caption>거래처 리스트</caption>
         <colgroup>
-<!--          <col style="width:4%;">-->
+          <col style="width:4%;">
           <col style="width:5%;">
           <col style="width:*;">
           <col style="width:6%;">
           <col style="width:12%;">
-<!--          <col style="width:14%;">-->
+          <col style="width:14%;">
           <col style="width:6%;">
           <col style="width:6%;">
           <col style="width:11%;">
-<!--          <col style="width:6%;">-->
-<!--          <col style="width:10%;">-->
+          <col style="width:6%;">
+          <col style="width:10%;">
         </colgroup>
         <thead>
         <tr>
-<!--          <th scope="col">번호</th>-->
+          <th scope="col">번호</th>
           <th>거래처ID</th>
           <th>거래처명</th>
           <th>대표자</th>
           <th>사업자번호</th>
           <th>연락처</th>
-<!--          <th>입금자</th>-->
+          <th>입금자</th>
           <th>거래여부</th>
           <th>계약일</th>
-<!--          <th>영업구분</th>-->
-<!--          <th>영업유형</th>-->
+          <th>영업구분</th>
+          <th>영업유형</th>
         </tr>
         </thead>
         <!-- loop over and print our customers-->
         <tbody>
-          <tr th:each="customer : ${allCustomers}">
-<!--            <td th:text="${customer.rownum}"></td>-->
+          <tr th:each="customer : ${customers}">
+            <td th:text="${customer.rownum}"></td>
             <td th:text="${customer.custNo}"></td>
             <td th:text="${customer.custNm}"></td>
             <td th:text="${customer.owner}"></td>
             <td th:text="${customer.bizNo}"></td>
-            <td th:text="${customer.comptel} ?: ' '" ></td>
-<!--            <td th:text="${customer.sendName} ?: ' '"></td>-->
+            <td th:utext="${customer.comptel} + ' /<br>' +${customer.confirmhp}"></td>
+            <td th:text="${customer.sendName}"></td>
             <td th:text="${customer.useFlag}"></td>
             <td th:text="${customer.joinDate}"></td>
-<!--            <td th:text="${customer.saleComm}"></td>-->
-<!--            <td th:text="${customer.closedDay}"></td>-->
+            <td th:text="${customer.saleCommNm}"></td>
+            <td th:text="${customer.closedDay}"></td>
           </tr>
         </tbody>
       </table>

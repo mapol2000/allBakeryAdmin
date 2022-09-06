@@ -36,6 +36,7 @@ $(function() {
 
                 const options = {
                     url : "/getCustomerList",
+                    formData : $("#frm").serialize() + "&page=" + page,
                     success : function (data) {
 
                         // 연락처 설정을 위한 로직
@@ -92,6 +93,12 @@ $(function() {
          */
         event: function() {
 
+            // 검색 버튼 클릭
+            $("#btnSearch").on("click", function() {
+
+                console.log("검색버튼 누름");
+            });
+
         },
 
         /**
@@ -105,7 +112,7 @@ $(function() {
             screen.event();
 
             // 거래처 리스트 호출.
-            screen.c.getCustomerList(1);
+            // screen.c.getCustomerList(1);
 
             console.log("cust0010M 화면");
 
