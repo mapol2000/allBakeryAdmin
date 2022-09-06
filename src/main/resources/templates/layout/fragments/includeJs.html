@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<th:block th:fragment="includeJsFragment">
+	<script src="/assets/plugins/global/plugins.bundle.js"></script>
+	<script src="/assets/js/scripts.bundle.js"></script>
+	<script type="text/javascript" src="/js/cmm/jquery/jquery.blockUI.js"></script>
+	<script type="text/javascript" src="/js/cmm/jquery/jqueryExtend.js"></script>
+	<script type="text/javascript" src="/js/cmm/sCommon.js?20220001"></script>
+
+	<!-- 고유 script 추가 -->
+	<th:block layout:fragment="script">
+		<script th:src="${'/js/biz/' + screenUri + '.js?20220001'}"></script>
+	</th:block>
+
+	<th:block layout:fragment="addScript">
+	</th:block>
+</th:block>
+</html>

@@ -1,0 +1,39 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driverClassName: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:mariadb://skebinse.gonetis.com:25252/all_bakery
+    username: ENC(UxaDJ5zSYpQLhkzcuysXt6SuKdq87Kww)
+    password: ENC(U/3HtLIb7te0WmJ5C6jZEXzdzW/fmW7v)
+
+server:
+  port: 8081
+
+# mybatis setting
+mybatis:
+  mapper-locations: mybatis/**/*.xml
+  configuration.map-underscore-to-camel-case: true
+  type-aliases-package: kr.co.allbakery
+
+logging:
+  level:
+    jdbc:
+      sqlonly: INFO
+      sqltiming: off
+      resultsettable: INFO
+      audit: off
+      resultset: off
+      connection: off
+
+file:
+  upload:
+    location: C:/workspace/eclipse/always/allbakery.co.kr/upload/
+    path-pattern: /upload/**
+
+mirlab:
+  sql:
+    param:
+      session:
+        column: loginUserId:userId

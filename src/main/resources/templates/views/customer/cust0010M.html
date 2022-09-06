@@ -1,0 +1,137 @@
+<!--
+/**********************************************************************
+* File Name			: cust0010M.html
+* Description		: 거래처리스트
+* Author			: peter
+* --------------------------------------------------------------------
+*    변경NO     변경일자 			변경자	            DESCRIPTION
+* --------------------------------------------------------------------
+*
+**********************************************************************/
+-->
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="content" >
+
+  <section id="contents">
+      <!-- searchArea -->
+      <div class="searchArea">
+          <form id="frm">
+              <input name="cTaxFlag" value="A" type="hidden">
+              <ul>
+                  <li>
+                      <label for="cQryFlag">
+                          <span>거래처검색</span>
+                          <select id="cQryFlag" name="cQryFlag" title="거래처 검색 방법 선택" style="width:123px;">
+                              <option value="0">거래처ID</option>
+                              <option value="1" selected="selected">거래처명</option>
+                              <option value="2">도/광역시</option>
+                              <option value="3">사업자번호</option>
+                          </select>
+                          <input type="text" id="searchKey" name="searchKey" style="width:123px;">
+                      </label>
+                      <label for="cUseFlag">
+                          <span>사용여부</span>
+                          <select id="cUseFlag" name="cUseFlag" title="사용여부 선택" style="width:123px;">
+                              <option value="">전체</option>
+                              <option value="Y" selected="selected">사용</option>
+                              <option value="N">거래중지</option>
+                          </select>
+                      </label>
+                      <label for="sSendNm">
+                          <span>입금자</span>
+                          <input type="text" id="sSendNm" name="sSendNm" title="입금자 입력" style="width:123px;">
+                      </label>
+                      <!--<label for="markingName">
+                          <span>영업담당</span>
+                          <famTag:select codeType="markingName" eletId="markingName" eletName="markingName" defaultName="영업담당자" eletStyle="width:123px;" />
+                      </label>-->
+                  </li>
+                  <li>
+                      <label for="telhpno">
+                          <span>연락처</span>
+                          <input type="text" id="telhpno" name="telhpno" title="연락처 입력" style="width:123px;">
+                      </label>
+                      <label for="sDate">
+                          <span>계약일</span>
+                          <input type="text" id="sDate" name="sDate" title="계약일 입력" data-component="calender" style="width:77px;" value="2005-01-01">
+                          <input type="text" id="eDate" name="eDate" title="계약일 입력" data-component="calender" style="width:77px;">
+                      </label>
+                      <!--<label for="cTaxFlag">
+                          <span>세금계산서</span>
+                          <select id="cTaxFlag" name="cTaxFlag" title="세금계산서 선택" style="width:123px;">
+                              <option value="A">전체</option>
+                              <option value="Y">발행</option>
+                              <option value="N">미발행</option>
+                          </select>
+                      </label>-->
+                      <!--<label for="saleComm">
+                          <span>영업구분</span>
+                          <famTag:select codeGrp="40" eletId="saleComm" eletName="saleComm" defaultName="영업구분 선택" eletStyle="width:123px;" />
+                      </label>-->
+                  </li>
+              </ul>
+          </form>
+          <div class="btnArea">
+              <a id="btnSearch" href="#" class="btnOrg"><span>검색</span></a>
+          </div>
+      </div>
+      <!--// searchArea -->
+    <!-- table -->
+    <div class="tblType01">
+      <table id="custTable">
+        <caption>거래처 리스트</caption>
+        <colgroup>
+<!--          <col style="width:4%;">-->
+          <col style="width:5%;">
+          <col style="width:*;">
+          <col style="width:6%;">
+          <col style="width:12%;">
+<!--          <col style="width:14%;">-->
+          <col style="width:6%;">
+          <col style="width:6%;">
+          <col style="width:11%;">
+<!--          <col style="width:6%;">-->
+<!--          <col style="width:10%;">-->
+        </colgroup>
+        <thead>
+        <tr>
+<!--          <th scope="col">번호</th>-->
+          <th>거래처ID</th>
+          <th>거래처명</th>
+          <th>대표자</th>
+          <th>사업자번호</th>
+          <th>연락처</th>
+<!--          <th>입금자</th>-->
+          <th>거래여부</th>
+          <th>계약일</th>
+<!--          <th>영업구분</th>-->
+<!--          <th>영업유형</th>-->
+        </tr>
+        </thead>
+        <!-- loop over and print our customers-->
+        <tbody>
+          <tr th:each="customer : ${allCustomers}">
+<!--            <td th:text="${customer.rownum}"></td>-->
+            <td th:text="${customer.custNo}"></td>
+            <td th:text="${customer.custNm}"></td>
+            <td th:text="${customer.owner}"></td>
+            <td th:text="${customer.bizNo}"></td>
+            <td th:text="${customer.comptel} ?: ' '" ></td>
+<!--            <td th:text="${customer.sendName} ?: ' '"></td>-->
+            <td th:text="${customer.useFlag}"></td>
+            <td th:text="${customer.joinDate}"></td>
+<!--            <td th:text="${customer.saleComm}"></td>-->
+<!--            <td th:text="${customer.closedDay}"></td>-->
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!--// table -->
+
+  </section>
+
+</th:block>
+
+</html>

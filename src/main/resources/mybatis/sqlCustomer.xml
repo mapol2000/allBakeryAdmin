@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.allbakery.mapper.CustomerMapper" >
+
+    <select id="getCustomerList" resultType="mirlab.common.vo.MirCamelVO">
+
+        <!--<bind name="bindSearchKey"		value="'%' + searchKey + '%'" />
+        <bind name="bindSSendNm"		value="'%' + sSendNm + '%'" />
+        <bind name="bindMarkingName"	value="'%' + markingName + '%'" />
+        <bind name="bindTelhpno"		value="'%' + telhpno + '%'" />
+        <bind name="bindSaleComm"		value="'%' + saleComm + '%'" />-->
+
+        SELECT	A.CUST_NO,
+
+        A.CUST_NM,
+        A.OWNER,
+        A.PHONE_NO,
+        A.MOBILE_NO,
+        A.EMAIL,
+        CONVERT (A.JOIN_DATE, CHAR)                     AS JOIN_DATE,
+        A.USE_FLAG,
+        A.BIZ_NO,
+        CONVERT (A.INSERT_DATE, CHAR)                   AS INSERT_DATE,
+        A.FAX_NO,
+        A.REMARK,
+        A.BIZ_TYPE,
+        A.BIZ_ITEM,
+        A.ZIPCODE,
+        CONCAT( A.ADDRESS1 , ' ' , A.ADDRESS2 )                  AS ADDRESS1,
+        A.CLOSED_DAY			                                 AS CLOSED_DAY,
+        A.SEND_NAME,
+        'ECOUNT' AS ECOUNT,
+        REPLACE(IFNULL(A.BIZ_NO, ''), '-', '')                   AS BIZ_NO1,
+        REPLACE(IFNULL(NULLIF(B.BIZ_NO, A.BIZ_NO), ''), '-', '') AS BIZ_NO2,
+        A.COMPTEL,
+        A.CONFIRMHP,
+        '01'                                                     AS GUBUN_CODE,
+        ''                                                       AS FAX_EMPTY,
+        A.B_ZIPCODE,
+        CONCAT( A.B_ADDRESS1 , ' ' , A.B_ADDRESS2 )              AS B_ADDRESS1,
+        A.TAXEMAIL,
+        A.SALE_COMM,
+        getCodeName('40', A.SALE_COMM)                   	     AS SALE_COMM_NM
+        FROM	T_MB_010 A
+        LEFT OUTER JOIN T_MB_010 B
+        ON	A.TAX_CUST_NO = B.CUST_NO
+        WHERE	1=1
+        ORDER BY A.JOIN_DATE DESC , A.CUST_NO DESC
+    </select>
+
+
+</mapper>

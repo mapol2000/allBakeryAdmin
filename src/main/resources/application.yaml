@@ -1,0 +1,27 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driverClassName: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://skebinse.gonetis.com:25252/all_bakery
+    username: ENC(UxaDJ5zSYpQLhkzcuysXt6SuKdq87Kww)
+    password: ENC(U/3HtLIb7te0WmJ5C6jZEXzdzW/fmW7v)
+
+# mybatis setting
+mybatis:
+  mapper-locations: mybatis/**/*.xml
+  configuration.map-underscore-to-camel-case: true
+  type-aliases-package: kr.co.allbakery
+
+# 경로 설정 해야 할듯?
+file:
+  upload:
+    location: C:/workspace/eclipse/justdoeng/shop.qqcart/upload/
+    path-pattern: /upload/**
+
+mirlab:
+  sql:
+    param:
+      session:
+        column: userId:loginUserId
