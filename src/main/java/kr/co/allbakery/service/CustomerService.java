@@ -67,4 +67,12 @@ public class CustomerService {
         return customerMapper.getCustomerList(param);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+    public int getBiacDplc(Map<String, String> param) throws Exception {
+
+        int totalCnt = customerMapper.getBiacDplc(param);
+
+        return totalCnt;
+    }
+
 }

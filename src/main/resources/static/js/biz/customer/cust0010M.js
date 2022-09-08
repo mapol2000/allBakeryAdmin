@@ -35,9 +35,9 @@ $(function() {
             getCustomerList : function(page) {
 
                 const options = {
-                    url : "/getCustomerList",
+                    queryId  : "/getCustomerList",
                     formData : $("#frm").serialize() + "&page=" + page,
-                    success : function (data) {
+                    success  : function (data) {
 
                         // 연락처 설정을 위한 로직
                         if(!!data.list) {
@@ -96,7 +96,7 @@ $(function() {
             // 검색 버튼 클릭
             $("#btnSearch").on("click", function() {
 
-                console.log("검색버튼 누름");
+                screen.c.getCustomerList(1);
             });
 
         },

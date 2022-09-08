@@ -5,11 +5,11 @@
 
     <select id="getCustomerList" resultType="mirlab.common.vo.MirCamelVO">
 
-        <bind name="bindSearchKey"		value="&quot;%&quot; + searchKey + &quot;%&quot;" />
+        <!--<bind name="bindSearchKey"		value="&quot;%&quot; + searchKey + &quot;%&quot;" />
         <bind name="bindSSendNm"		value="&quot;%&quot; + sSendNm + &quot;%&quot;" />
         <bind name="bindMarkingName"	value="&quot;%&quot; + markingName + &quot;%&quot;" />
         <bind name="bindTelhpno"		value="&quot;%&quot; + telhpno + &quot;%&quot;" />
-        <bind name="bindSaleComm"		value="&quot;%&quot; + saleComm + &quot;%&quot;" />
+        <bind name="bindSaleComm"		value="&quot;%&quot; + saleComm + &quot;%&quot;" />-->
 
 
             SELECT * FROM
@@ -51,13 +51,33 @@
         LEFT OUTER JOIN T_MB_010 B
         ON	A.TAX_CUST_NO = B.CUST_NO
         WHERE	1=1
-        <!--<if test="cUseFlag != ''">
+        <!--<choose>
+            <when test="cQryFlag == 0 and searchKey != ''">
+                <bind name="bindSearchKey"		value="&quot;%&quot; + searchKey + &quot;%&quot;" />
+                AND A.CUST_NO LIKE #{bindSearchKey}
+            </when>
+            <when test="cQryFlag == 1 and searchKey != ''">
+                <bind name="bindSearchKey"		value="&quot;%&quot; + searchKey + &quot;%&quot;" />
+                AND ((A.CUST_NM  LIKE #{bindSearchKey}) OR (A.CUST_SNM LIKE #{bindSearchKey}))
+            </when>
+            <when test="cQryFlag == 2 and searchKey != ''">
+                <bind name="bindSearchKey"		value="&quot;%&quot; + searchKey + &quot;%&quot;" />
+                AND A.ADDRESS1 LIKE #{bindSearchKey}
+            </when>
+            <when test="cQryFlag == 3 and searchKey != ''">
+                <bind name="bindSearchKey"		value="&quot;%&quot; + searchKey + &quot;%&quot;" />
+                AND A.BIZ_NO LIKE #{bindSearchKey}
+            </when>
+        </choose>
+        <if test="cUseFlag != ''">
             AND	A.USE_FLAG LIKE #{cUseFlag}
         </if>
         <if test="markingName != ''">
+            <bind name="bindMarkingName"	value="&quot;%&quot; + markingName + &quot;%&quot;" />
             AND	A.MARKING_NAME LIKE #{bindMarkingName}
         </if>
         <if test="telhpno != ''">
+            <bind name="bindTelhpno"		value="&quot;%&quot; + telhpno + &quot;%&quot;" />
             AND	(A.PHONE_NO LIKE #{bindTelhpno} OR A.MOBILE_NO LIKE #{bindTelhpno} OR A.COMPTEL LIKE #{bindTelhpno} OR A.CONFIRMHP LIKE #{bindTelhpno} OR A.ORDERHP LIKE #{bindTelhpno}  OR A.OTHERTEL LIKE #{bindTelhpno})
         </if>
         <if test="sDate != '' and eDate != ''">
@@ -67,11 +87,22 @@
             AND	A.TAX_YN = #{cTaxFlag}
         </if>
         <if test="saleComm != ''">
+            <bind name="bindSaleComm"		value="&quot;%&quot; + saleComm + &quot;%&quot;" />
             AND	A.SALE_COMM LIKE #{bindSaleComm}
         </if>-->
         ORDER BY A.JOIN_DATE DESC , A.CUST_NO DESC
             ) P ,(SELECT @rownum:=0) TMP ) PP
 
+    </select>
+
+    <!-- 거래처명 중복 조회. -->
+    <select id="getBiacDplc" parameterType="Map" resultType="int">
+        SELECT COUNT(*) CNT
+        FROM T_MB_010
+        WHERE CUST_NM = #{custNm}
+        <if test="custNo != '' and custNo != null">
+            AND	CUST_NO != #{custNo}
+        </if>
     </select>
 
 

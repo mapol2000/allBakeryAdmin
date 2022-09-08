@@ -7,11 +7,9 @@ import kr.co.allbakery.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import kr.co.allbakery.common.session.SessionData;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Map;
@@ -90,7 +88,24 @@ public class PathController {
 		List<Map<String, String>> customers = customerService.getCustomerList(param);
 		model.addAttribute("customers", customers);
 
+		// 거래처정보 등록
+		// 거래처명 중복 조회.
+		// customerService.getBiacDplc(param);
+
 		return page(url, request, model);
+	}
+
+	/**
+	 * 거래처명 중복 조회.
+	 *
+	 * @param param
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/getBiacDplc", method = RequestMethod.POST)
+	public @ResponseBody int getBiacDplc(@RequestParam Map<String, String> param) throws Exception {
+
+		return customerService.getBiacDplc(param);
 	}
 
 	/**

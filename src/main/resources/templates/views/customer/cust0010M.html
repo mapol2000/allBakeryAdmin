@@ -23,17 +23,17 @@
                   <li>
                       <label for="cQryFlag">
                           <span>거래처검색</span>
-                          <select id="cQryFlag" name="cQryFlag" title="거래처 검색 방법 선택" style="width:123px;">
+                          <select th:name="cQryFlag" id="cQryFlag" name="cQryFlag" title="거래처 검색 방법 선택" style="width:123px;">
                               <option value="0">거래처ID</option>
                               <option value="1" selected="selected">거래처명</option>
                               <option value="2">도/광역시</option>
                               <option value="3">사업자번호</option>
                           </select>
-                          <input type="text" id="searchKey" name="searchKey" style="width:123px;">
+                          <input th:name="searchKey" type="text" id="searchKey" name="searchKey" style="width:123px;">
                       </label>
                       <label for="cUseFlag">
                           <span>사용여부</span>
-                          <select id="cUseFlag" name="cUseFlag" title="사용여부 선택" style="width:123px;">
+                          <select th:name="cUseFlag" id="cUseFlag" name="cUseFlag" title="사용여부 선택" style="width:123px;">
                               <option value="">전체</option>
                               <option value="Y" selected="selected">사용</option>
                               <option value="N">거래중지</option>
@@ -41,7 +41,7 @@
                       </label>
                       <label for="sSendNm">
                           <span>입금자</span>
-                          <input type="text" id="sSendNm" name="sSendNm" title="입금자 입력" style="width:123px;">
+                          <input th:name="sSendNm" type="text" id="sSendNm" name="sSendNm" title="입금자 입력" style="width:123px;">
                       </label>
                       <!--<label for="markingName">
                           <span>영업담당</span>
@@ -51,12 +51,12 @@
                   <li>
                       <label for="telhpno">
                           <span>연락처</span>
-                          <input type="text" id="telhpno" name="telhpno" title="연락처 입력" style="width:123px;">
+                          <input th:name="telhpno" type="text" id="telhpno" name="telhpno" title="연락처 입력" style="width:123px;">
                       </label>
                       <label for="sDate">
                           <span>계약일</span>
-                          <input type="text" id="sDate" name="sDate" title="계약일 입력" data-component="calender" style="width:77px;" value="2005-01-01">
-                          <input type="text" id="eDate" name="eDate" title="계약일 입력" data-component="calender" style="width:77px;">
+                          <input th:name="sDate" type="text" id="sDate" name="sDate" title="계약일 입력" data-component="calender" style="width:77px;" value="2005-01-01">
+                          <input th:name="eDate" type="text" id="eDate" name="eDate" title="계약일 입력" data-component="calender" style="width:77px;">
                       </label>
                       <!--<label for="cTaxFlag">
                           <span>세금계산서</span>

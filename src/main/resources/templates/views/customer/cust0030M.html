@@ -1,0 +1,384 @@
+<!--
+/**********************************************************************
+* File Name			: cust0030M.html
+* Description		: 거래처정보 등록
+* Author			: peter
+* --------------------------------------------------------------------
+*    변경NO     변경일자 			변경자	            DESCRIPTION
+* --------------------------------------------------------------------
+*
+**********************************************************************/
+-->
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="content" >
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <section id="contents">
+        <h2>거래처정보 등록</h2>
+
+        <!-- table -->
+        <div class="tblType02">
+            <form id="frm">
+                <input type="hidden" name="lot" id="lot" />
+                <input type="hidden" name="lat" id="lat" />
+                <input type="hidden" name="prevCustNo" id="prevCustNo" />
+                <table>
+                    <caption>거래처정보 등록</caption>
+                    <colgroup>
+                        <col style="width:15%;">
+                        <col style="width:35%;">
+                        <col style="width:15%;">
+                        <col style="width:35%;">
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th scope="row"><label for="custNm">거래처 명</label></th>
+                        <td>
+                            <input type="text" id="custNm" name="custNm" data-validate="거래처 명" data-min-length="2" title="거래처 명 입력" style="width:70%">
+                            <a id="btnCustNmDplc" href="javascript:void(0)" class="btnTbl"><span>중복확인</span></a>
+                        </td>
+                        <th scope="row"><label for="custSnm">거래처 단축명</label></th>
+                        <td>
+                            <input type="text" id="custSnm" name="custSnm" data-validate="거래처 단축명" maxlength="16"
+                                   data-min-length="2" data-max-length="16" title="거래처 단축명 입력">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">사용여부</th>
+                        <td>
+                            <div class="labelChkArea">
+                                <label for="useFlag1">
+                                    <input type="radio" name="useFlag" id="useFlag1" value="Y" title="예 선택" checked="checked"> <span>예</span>
+                                </label>
+                                <label for="useFlag2">
+                                    <input type="radio" name="useFlag" id="useFlag2" value="N" title="아니오 선택"> <span>아니오</span>
+                                </label>
+                            </div>
+                        </td>
+                        <th scope="row"><label for="passwd">비밀번호</label></th>
+                        <td>
+                            <input type="password" id="passwd" name="passwd" data-validate="비밀번호" data-min-length="4" title="비밀번호 입력">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="owner">대표자/생년월일</label></th>
+                        <td>
+                            <input type="text" id="owner" name="owner" title="대표자 명 입력" data-validate="대표자 명" data-min-length="1" style="width:32%">
+                            <input type="text" id="regNo" name="regNo" title="생년월일 입력" style="width:32%"
+                                   data-number-only="true" maxlength="8"> <span>(YYYYMMDD)</span>
+                        </td>
+                        <th scope="row"><label for="bizNo">사업자등록번호</label></th>
+                        <td>
+                            <input type="text" id="bizNo" name="bizNo" title="사업자등록번호 입력" data-validate="사업자등록번호"
+                                   maxlength="10" data-min-length="10" style="width:70%" data-number-only="true">
+                            <a id="btnBizNoDplc" href="javascript:void(0)" class="btnTbl"><span>중복확인</span></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="bizType">업태</label></th>
+                        <td>
+                            <input type="text" id="bizType" name="bizType" data-validate="사업장 업태" data-min-length="2" title="업태 입력">
+                        </td>
+                        <th scope="row"><label for="bizItem">종목</label></th>
+                        <td>
+                            <input type="text" id="bizItem" name="bizItem" data-validate="사업장 종목" data-min-length="2" title="종목 입력">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="taxDate">세금계산서 정산일자</label></th>
+                        <td>
+                            <input type="text" id="taxDate" name="taxDate" title="세금계산서 정산일자 입력">
+                        </td>
+                        <th scope="row"><label for="taxIssueDate">세금계산서 발행일자</label></th>
+                        <td>
+                            <input type="text" id="taxIssueDate" name="taxIssueDate" title="세금계산서 발행일자 입력">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">가맹여부</th>
+                        <td>
+                            <div class="labelChkArea">
+                                <label for="taxYn1">
+                                    <input type="radio" name="taxYn" id="taxYn1" value="Y" title="예 선택" checked="checked"> <span>예</span>
+                                </label>
+                                <label for="taxYn2">
+                                    <input type="radio" name="taxYn" id="taxYn2" value="N" title="아니오 선택"> <span>아니오</span>
+                                </label>
+                            </div>
+                        </td>
+                        <th scope="row"><label for="taxCustNo">본사코드(ID)</label></th>
+                        <td>
+                            <input type="text" id="taxCustNo" name="taxCustNo" title="본사코드(ID) 입력" style="width:20%;">
+                            <a id="btnCustSearch" href="javascript:void(0)" class="btnSearch">본사코드(ID) 검색</a>
+                            <input type="text" id="txtCustNM" title="본사코드(ID) 입력" style="width:40%;">
+                            <label for="hdofIspYn"><input type="checkbox" id="hdofIspYn" name="hdofIspYn" value="Y"/><span>본사발행</span></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="compTel">매장전화번호</label></th>
+                        <td>
+                            <input type="text" id="compTel" name="compTel1" title="매장전화번호 국번 입력"
+                                   data-number-only="true" maxlength="3" style="width:28%;"> <span>-</span>
+                            <input type="text" id="compTel2" name="compTel2" title="매장전화번호 앞자리 입력" maxlength="4" data-number-only="true" style="width:28%;"> -
+                            <input type="text" id="compTel3" name="compTel3" title="매장전화번호 뒷자리 입력" maxlength="4" data-number-only="true" style="width:28%;">
+                        </td>
+                        <th scope="row"><label for="confirmhp">SMS연락처</label></th>
+                        <td>
+                            <input type="text" id="confirmhp" name="confirmhp1" title="SMS연락처 국번 입력"
+                                   data-number-only="true" maxlength="3" style="width:28%;"> <span>-</span>
+                            <input type="text" id="confirmhp2" name="confirmhp2" title="SMS연락처 앞자리 입력" maxlength="4" data-number-only="true" style="width:28%;"> <span>-</span>
+                            <input type="text" id="confirmhp3" name="confirmhp3" title="SMS연락처 뒷자리 입력" maxlength="4" data-number-only="true" style="width:28%;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="taxemail">전자우편</label></th>
+                        <td>
+                            <input type="text" id="taxemail" name="taxemail" title="전자우편 입력" style="width:70%">
+                        </td>
+                        <th scope="row">기타연락처</th>
+                        <td>
+                            <ul class="inputList">
+                                <li>
+                                    <label for="phoneNo">
+                                        <span>대표자연락처</span> <input type="text" name="phoneNo" id="phoneNo" title="대표자연락처 입력" style="width:120px">
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="mobileNo">
+                                        <span>대표자휴대폰</span> <input type="text" name="mobileNo" id="mobileNo" title="대표자휴대폰 입력"
+                                                                   data-number-only="true" style="width:120px">
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="ordernm">
+                                        <span>주문담당자명</span> <input type="text" name="ordernm" id="ordernm" title="주문담당자명 입력" style="width:120px">
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="orderhp">
+                                        <span>주문자휴대폰</span> <input type="text" name="orderhp" id="orderhp" title="주문자휴대폰 입력"
+                                                                   data-number-only="true" style="width:120px">
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="confirmnm">
+                                        <span>결제담당자명</span> <input type="text" name="confirmnm" id="confirmnm" title="결제담당자명 입력" style="width:120px">
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="othertel">
+                                        <span>기타연락처</span> <input type="text" name="othertel" id="othertel" title="기타연락처 입력"
+                                                                  data-number-only="true" style="width:120px">
+                                    </label>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">사업자등록증</th>
+                        <td >&nbsp;</td>
+                        <th scope="row"><label for="orderSmsYn1">주문문자발송</label></th>
+                        <td>
+                            <div class="labelChkArea">
+                                <label for="orderSmsYn1">
+                                    <input type="radio" name="orderSmsYn" id="orderSmsYn1" value="Y" title="예 선택" checked="checked"> <span>예</span>
+                                </label>
+                                <label for="orderSmsYn2">
+                                    <input type="radio" name="orderSmsYn" id="orderSmsYn2" value="N" title="아니오 선택"> <span>아니오</span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="fmjoinDay">매장오픈일</label></th>
+                        <td>
+                            <input type="text" id="fmjoinDay" name="fmjoinDay" title="매장오픈일 입력" data-number-only="true" data-component="calender">
+                        </td>
+                        <th scope="row"><label for="acountNo">결제구분</label></th>
+                        <td>
+                            <famTag:select codeGrp="19" eletId="acountNo" eletName="acountNo" defaultName="결제 선택" dataValidate="결제구분" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="sendName">입금자</label></th>
+                        <td>
+                            <input type="text" id="sendName" name="sendName" title="입금자 입력">
+                        </td>
+                        <th scope="row"><label for="markingName">영업담당자</label></th>
+                        <td>
+                            <famTag:select codeType="markingName" eletId="markingName" eletName="markingName" defaultName="영업담당자 선택" dataValidate="영업담당자" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">주문가능여부</th>
+                        <td colspan="3">
+                            <div class="labelChkArea">
+                                <label for="orderYesorno1">
+                                    <input type="radio" name="orderYesorno" id="orderYesorno1" value="Y" title="예 선택"> <span>예</span>
+                                </label>
+                                <label for="orderYesorno2">
+                                    <input type="radio" name="orderYesorno" id="orderYesorn2" value="N" title="아니오 선택" checked="checked"> <span>아니오</span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="zipcode">배송지 주소</label></th>
+                        <td>
+                            <ul class="addressInputArea">
+                                <li><label for="chkCopy"><input type="checkbox" id="chkCopy" title="주소 복사"><span>주소복사</span></label></li>
+                                <li>
+                                    <input type="text" id="zipcode" name="zipcode" title="배송지 우편번호 입력" style="width:60px;"
+                                           data-validate="배송지 우편번호" data-max-length="5" readonly="readonly">
+                                    <a id="btnSearchPost" href="javascript:void(0)" class="btnTbl"><span>우편번호찾기</span></a>
+                                    <input type="text" id="stdoCd" name="stdoCd" value="" style="display: inline-block;width: 100px;" readonly>
+                                </li>
+                                <li><input type="text" id="address1" name="address1" data-validate="배송지 주소" title="주소 입력"></li>
+                                <li><input type="text" id="address2" name="address2" data-validate="배송지 상세주소" title="상세 주소 입력"></li>
+                            </ul>
+                        </td>
+                        <th scope="row"><label for="bZipcode">사업장 주소</label></th>
+                        <td>
+                            <ul class="addressInputArea">
+                                <li>
+                                    <input type="hidden" id="bStdoCd" name="bStdoCd">
+                                    <input type="text" id="bZipcode" name="bZipcode1" title="배송지 우편번호 입력" style="width:50px;" readonly="readonly">
+                                    <a id="btnSearchBizPost" href="javascript:void(0)" class="btnTbl"><span>우편번호찾기</span></a>
+                                </li>
+                                <li><input type="text" id="bAddress1" name="bAddress1" title="주소 입력"></li>
+                                <li><input type="text" id="bAddress2" name="bAddress2" title="상세 주소 입력"></li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="eAddress">부재시 배송처</label></th>
+                        <td colspan="3">
+                            <input type="text" id="eAddress" name="eAddress" title="부재시 배송처 입력">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="minCnt">최소배송금액</label></th>
+                        <td>
+                            <input type="text" id="minCnt" name="minCnt" title="최소배송금액 입력">
+                        </td>
+                        <th scope="row"><label for="minOrderYn">최소배송금액 이하주문</label></th>
+                        <td>
+                            <select name="minOrderYn" id="minOrderYn" title="최소배송금액 이하주문 선택">
+                                <option value="Y">Y</option>
+                                <option value="N" selected="selected">N</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="joinDate">가맹점등록일</label></th>
+                        <td>
+                            <input type="text" id="joinDate" name="joinDate" title="가맹점등록일 입력" data-validate="가맹점등록일" data-component="calender">
+                        </td>
+                        <th scope="row"><label for="carType">배송차량</label></th>
+                        <td>
+                            <famTag:select codeGrp="10" eletId="carType" eletName="carType" selectCode="02" defaultName="배송차량 선택" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">배송불가요일</th>
+                        <td colspan="3">
+                            <div class="labelChkArea">
+                                <label for="expressWeekAll">
+                                    <input type="checkbox" id="expressWeekAll" title="전체"> <span>전체</span>
+                                </label>
+                                <label for="expressWeek8" class="none">
+                                    <input type="checkbox" name="expressWeek" id="expressWeek8" title="일" value="1" checked="checked" > <span>일</span>
+                                </label>
+                                <label for="expressWeek2">
+                                    <input type="checkbox" name="expressWeek" id="expressWeek2" title="월" value="2"> <span>월</span>
+                                </label>
+                                <label for="expressWeek3">
+                                    <input type="checkbox" name="expressWeek" id="expressWeek3" title="화" value="3"> <span>화</span>
+                                </label>
+                                <label for="expressWeek4">
+                                    <input type="checkbox" name="expressWeek" id="expressWeek4" title="수" value="4"> <span>수</span>
+                                </label>
+                                <label for="expressWeek5">
+                                    <input type="checkbox" name="expressWeek" id="expressWeek5" title="목" value="5"> <span>목</span>
+                                </label>
+                                <label for="expressWeek6">
+                                    <input type="checkbox" name="expressWeek" id="expressWeek6" title="금" value="6"> <span>금</span>
+                                </label>
+                                <label for="expressWeek7">
+                                    <input type="checkbox" name="expressWeek" id="expressWeek7" title="토" value="7"> <span>토</span>
+                                </label>
+                                <span>(Check 된 요일 배송불가, 일요일은 배송불가)</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">공휴일 배송불가</th>
+                        <td>
+                            <div class="labelChkArea">
+                                <label for="holiday1">
+                                    <input type="radio" name="holiday" id="holiday1" value="1" title="예 선택" checked="checked"> <span>예</span>
+                                </label>
+                                <label for="holiday2">
+                                    <input type="radio" name="holiday" id="holiday2" value="" title="아니오 선택"> <span>아니오</span>
+                                </label>
+                            </div>
+                        </td>
+                        <th scope="row"><label for="priceAllRegistYn">일괄단가등록여부</label></th>
+                        <td>
+                            <select name="priceAllRegistYn" id="priceAllRegistYn" title="일괄단가등록여부 선택">
+                                <option value="Y" >사용</option>
+                                <option value="N">사용하지 않음</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="appValue">회원구분</label></th>
+                        <td>
+                            <select name="appValue" id="appValue" title="회원구분 선택">
+                                <option value="01">사업자</option>
+                                <option value="02">개인</option>
+                            </select>
+                        </td>
+                        <th scope="row"><label for="saleComm">영업수당구분</label></th>
+                        <td>
+                            <famTag:select codeGrp="40" eletId="saleComm" eletName="saleComm" eletStyle="background-color:#cccccc" defaultName="영업구분 선택" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="mapInfo">OPEN 시간</label></th>
+                        <td>
+                            <input type="text" id="mapInfo" name="mapInfo" title="OPEN 시간 입력">
+                        </td>
+                        <th scope="row"><label for="closedDay">영업유형</label></th>
+                        <td>
+                            <input type="text" id="closedDay" name="closedDay" title="영업유형 입력">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="orderDesc">거래처특이사항</label></th>
+                        <td colspan="3">
+                            <textarea id="orderDesc" name="orderDesc"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="fixRequest">고정주문요청</label></th>
+                        <td colspan="3">
+                            <textarea id="fixRequest" name="fixRequest"></textarea>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+        <!--// table -->
+
+        <div class="btnArea">
+            <a id="btnSave" href="javascript:void(0)" class="btnOrg"><span>저장</span></a>
+        </div>
+
+    </section>
+
+</th:block>
+
+</html>

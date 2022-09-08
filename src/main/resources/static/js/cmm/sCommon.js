@@ -326,6 +326,67 @@ const $cmm = {
         },
 
         /**
+         * 다음 우편번호 팝업을 호출한다.
+         *
+         * @memberOf $cmm.util
+         * @param {Element} $post 우편번호 객체
+         * @param {Element} $addr1 기본주소 객체
+         * @param {Element} $addr2 상세주소 객체
+         * @param {Function} callback 선택 후 콜백
+         */
+        daumPostOpen : function($post, $addr1, $addr2, callback) {
+
+            new daum.Postcode({
+
+                oncomplete: function (data) {
+
+                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var fullAddr = ''; // 최종 주소 변수
+                    var extraAddr = ''; // 조합형 주소 변수
+
+                    fullAddr = data.roadAddress;
+
+                    // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        fullAddr = data.roadAddress;
+
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        fullAddr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 조합한다.
+                    if (data.userSelectedType === 'R') {
+                        //법정동명이 있을 경우 추가한다.
+                        if (data.bname !== '') {
+                            extraAddr += data.bname;
+                        }
+                        // 건물명이 있을 경우 추가한다.
+                        if (data.buildingName !== '') {
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+                        fullAddr += (extraAddr !== '' ? ' (' + extraAddr + ')' : '');
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    $post.val(data.zonecode);
+                    $addr1.val(fullAddr);
+
+                    // 커서를 상세주소 필드로 이동한다.
+                    $addr2.val("");
+                    $addr2.focus();
+
+                    if(!!callback) {
+                        callback(data);
+                    }
+                }
+            }).open();
+        },
+
+        /**
          * 숫자만 추출
          *
          * @memberOf $cmm.util
@@ -419,6 +480,33 @@ const $cmm = {
         },
 
         /**
+         * 영어 소문자와 숫자 유효성 검사를 체크 한다..
+         * @memberOf $cmm.util
+         * @param {String} value 값
+         * @returns {boolean} true/false
+         */
+        checkSmEngNum : function(value) {
+
+            var regExpEng = /[a-z]/;
+            var regExpNum = /[0-9]/;
+
+            return regExpEng.test(value) && regExpNum.test(value);
+        },
+
+        /**
+         * 이메일 유효성 검사를 체크 한다..
+         * @memberOf $cmm.util
+         * @param {String} mail 이메일
+         * @returns {boolean} true/false
+         */
+        checkMail : function(mail) {
+
+            var regExp=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+
+            return regExp.test(mail);
+        },
+
+        /**
          * GUID 생성
          * @memberOf $cmm.util
          * @param value
@@ -450,6 +538,82 @@ const $cmm = {
                 vars[tempId] = $(this).clone().removeClass('d-none').removeAttr('data-template-id');
                 $(this).remove();
             });
+        },
+
+        /**
+         * 필수 입력 값 validate 체크.
+         *
+         * @memberOf $cmm.util
+         * @param {Element} element 객체
+         * @param {function} callbackFunc 콜백 함수
+         */
+        inputValidate : function(element, callbackFunc) {
+
+            var isValidate = true;
+            element = !!element ? element : "";
+
+            // data-validate에 값이 있을 경우 체크.
+            $(element + "[data-validate]").each(function() {
+
+                if($(this).isEmpty() && !!$(this).data("validate")) {
+
+                    alert($(this).data("validate") + "은(는) 필수 입력값 입니다.");
+                    $(this).focus();
+                    isValidate = false;
+
+                    return false;
+                }
+            });
+
+            if(isValidate) {
+
+                var validateLen;
+
+                // data-min-length에 값이 있을 경우 체크.
+                $(element + "[data-min-length]").each(function() {
+
+                    validateLen = !!$(this).data("min-length") ? Number($(this).data("min-length")) : 0;
+
+                    // 글자수 최소 length 체크.
+                    if(validateLen > 0 && validateLen > $(this).val().length) {
+
+                        alert($(this).data("validate") + "은(는) " + validateLen + "자 이상 입력하셔야 합니다.");
+                        $(this).focus();
+                        isValidate = false;
+
+                        return false;
+                    }
+                });
+            }
+
+            if(isValidate) {
+
+                var validateLen;
+
+                // data-max-length에 값이 있을 경우 체크.
+                $(element + "[data-max-length]").each(function() {
+
+                    validateLen = !!$(this).data("max-length") ? Number($(this).data("max-length")) : 0;
+
+                    // 글자수 최대 length 체크.
+                    if(validateLen > 0 && validateLen < $(this).val().length) {
+
+                        alert($(this).data("validate") + "은(는) " + validateLen + "자 이내로 입력하셔야 합니다.");
+                        $(this).focus();
+                        isValidate = false;
+
+                        return false;
+                    }
+                });
+            }
+
+            // validate통과 후 콜백 함수가 있을 경우 실행
+            if(isValidate && !!callbackFunc) {
+
+                callbackFunc();
+            }
+
+            return isValidate;
         },
 
         /**
@@ -683,6 +847,7 @@ const $cmm = {
 			return consonantCode !== 0;
 		},
 
+
 		/**
 		 * validate 체크
 		 *
@@ -695,7 +860,8 @@ const $cmm = {
 				$elet = $('body');
 			}
 
-			$elet.find('[data-validate]').each(function() {
+            $($elet + "[data-validate]").each(function() {
+            // $elet.find('[data-validate]').each(function() {
 
 				if($(this).isEmpty()) {
 
