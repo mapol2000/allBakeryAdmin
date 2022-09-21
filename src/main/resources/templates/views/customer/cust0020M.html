@@ -1,0 +1,86 @@
+<!--
+/**********************************************************************
+* File Name			: cust0020M.html
+* Description		: 거래처승인
+* Author			: peter
+* --------------------------------------------------------------------
+*    변경NO     변경일자 			변경자	            DESCRIPTION
+* --------------------------------------------------------------------
+*
+**********************************************************************/
+-->
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="content" >
+  <section id="contents">
+  <h2>거래처승인</h2>
+
+  <form id="frm">
+    <!-- searchArea -->
+    <div class="searchArea">
+      <div class="radioBoxArea">
+        <div class="radioBox">
+          <input type="radio" name="appFlag" value="A" id="appFlag1"><label for="appFlag1">전체</label>
+        </div>
+        <div class="radioBox">
+          <input type="radio" name="appFlag" value="R" id="appFlag2" checked="checked"><label for="appFlag2">접수</label>
+        </div>
+        <div class="radioBox">
+          <input type="radio" name="appFlag" value="P" id="appFlag3"><label for="appFlag3">보류</label>
+        </div>
+        <div class="btnRight">
+          <a id="btnSearch" href="javascript:void(0)" class="btnOrg"><span>검색</span></a>
+          <a id="btnSspn" href="javascript:void(0)" class="btnOrg borderType"><span>보류</span></a>
+        </div>
+      </div>
+    </div>
+    <!--// searchArea -->
+    <!-- table -->
+    <div class="tblType01">
+      <table id="custTable">
+        <caption>거래처 리스트</caption>
+        <colgroup>
+          <col style="width:4%;">
+          <col style="width:5%;">
+          <col style="width:12%;">
+          <col style="width:6%;">
+          <col style="width:6%;">
+          <col style="width:*;">
+          <col style="width:12%;">
+          <col style="width:25%;">
+        </colgroup>
+        <thead>
+        <tr>
+          <th scope="col"><input id="chkAll" type="checkbox" title="전체선택"></th>
+          <th scope="col">순번</th>
+          <th scope="col">요청일시</th>
+          <th scope="col">구분</th>
+          <th scope="col">상태</th>
+          <th scope="col">거래처명</th>
+          <th scope="col">매장연락처</th>
+          <th scope="col" class="last">특이사항</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-component="trTemp" class="none">
+          <td><input data-column="custNo" name="custNo" type="checkbox" title="선택"></td>
+          <td data-column="rownum"></td>
+          <td data-column="insertDate"></td>
+          <td data-column="appValue"></td>
+          <td data-column="appFlag"></td>
+          <td data-column="custNm" class="al"></td>
+          <td data-column="compTel"></td>
+          <td data-column="orderDesc" class="last al"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </form>
+  <!--// table -->
+
+</section>
+
+</th:block>
+
+</html>

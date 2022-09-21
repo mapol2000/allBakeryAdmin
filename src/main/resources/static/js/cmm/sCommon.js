@@ -541,82 +541,6 @@ const $cmm = {
         },
 
         /**
-         * 필수 입력 값 validate 체크.
-         *
-         * @memberOf $cmm.util
-         * @param {Element} element 객체
-         * @param {function} callbackFunc 콜백 함수
-         */
-        inputValidate : function(element, callbackFunc) {
-
-            var isValidate = true;
-            element = !!element ? element : "";
-
-            // data-validate에 값이 있을 경우 체크.
-            $(element + "[data-validate]").each(function() {
-
-                if($(this).isEmpty() && !!$(this).data("validate")) {
-
-                    alert($(this).data("validate") + "은(는) 필수 입력값 입니다.");
-                    $(this).focus();
-                    isValidate = false;
-
-                    return false;
-                }
-            });
-
-            if(isValidate) {
-
-                var validateLen;
-
-                // data-min-length에 값이 있을 경우 체크.
-                $(element + "[data-min-length]").each(function() {
-
-                    validateLen = !!$(this).data("min-length") ? Number($(this).data("min-length")) : 0;
-
-                    // 글자수 최소 length 체크.
-                    if(validateLen > 0 && validateLen > $(this).val().length) {
-
-                        alert($(this).data("validate") + "은(는) " + validateLen + "자 이상 입력하셔야 합니다.");
-                        $(this).focus();
-                        isValidate = false;
-
-                        return false;
-                    }
-                });
-            }
-
-            if(isValidate) {
-
-                var validateLen;
-
-                // data-max-length에 값이 있을 경우 체크.
-                $(element + "[data-max-length]").each(function() {
-
-                    validateLen = !!$(this).data("max-length") ? Number($(this).data("max-length")) : 0;
-
-                    // 글자수 최대 length 체크.
-                    if(validateLen > 0 && validateLen < $(this).val().length) {
-
-                        alert($(this).data("validate") + "은(는) " + validateLen + "자 이내로 입력하셔야 합니다.");
-                        $(this).focus();
-                        isValidate = false;
-
-                        return false;
-                    }
-                });
-            }
-
-            // validate통과 후 콜백 함수가 있을 경우 실행
-            if(isValidate && !!callbackFunc) {
-
-                callbackFunc();
-            }
-
-            return isValidate;
-        },
-
-        /**
          * 데이터 매핑
          * @memberOf $cmm.util
          * @param $elet
@@ -860,10 +784,10 @@ const $cmm = {
 				$elet = $('body');
 			}
 
-            $($elet + "[data-validate]").each(function() {
-            // $elet.find('[data-validate]').each(function() {
+            $elet.find('[data-validate]').each(function() {
 
 				if($(this).isEmpty()) {
+                    console.log("비어있음");
 
 					$cmm.alert($(this).data('validate') +
 						($cmm.util.isKorProp($(this).data('validate')) ? '을' : '를') + ' 입력해 주세요.', () => {
@@ -874,10 +798,62 @@ const $cmm = {
 					isValidate = false;
 					return false;
 				}
-			});
+
+            });
+
+                if(isValidate) {
+
+                    var validateLen;
+
+                    // data-min-length에 값이 있을 경우 체크.
+                    $elet.find('[data-min-length]').each(function() {
+
+                        validateLen = !!$(this).data("min-length") ? Number($(this).data("min-length")) : 0;
+
+                        // 글자수 최소 length 체크.
+                        if(validateLen > 0 && validateLen > $(this).val().length) {
+
+                            alert($(this).data("validate") + "은(는) " + validateLen + "자 이상 입력하셔야 합니다.");
+                            $(this).focus();
+                            isValidate = false;
+
+                            return false;
+                        }
+                    });
+                }
+
+                if(isValidate) {
+
+                    var validateLen;
+
+                    // data-max-length에 값이 있을 경우 체크.
+                    $elet.find('[data-max-length]').each(function() {
+
+
+                        validateLen = !!$(this).data("max-length") ? Number($(this).data("max-length")) : 0;
+
+                        // 글자수 최대 length 체크.
+                        if(validateLen > 0 && validateLen < $(this).val().length) {
+
+                            alert($(this).data("validate") + "은(는) " + validateLen + "자 이내로 입력하셔야 합니다.");
+                            $(this).focus();
+                            isValidate = false;
+
+                            return false;
+                        }
+                    });
+                }
+
+
+            // validate통과 후 콜백 함수가 있을 경우 실행
+            // if(isValidate && !!callbackFunc) {
+            //
+            //     callbackFunc();
+            // }
 
 			return isValidate;
 		}
+
     },
 
     /**
@@ -1004,10 +980,127 @@ const $cmm = {
             }
         };
 
-		if(_options.isValidate && $cmm.util.validate()) {
+		if(_options.isValidate) {
 
         	$.ajax(_options);
 		}
+
+    },
+
+    /**
+     * Popup에 대한 유틸 정보를 관리한다.
+     *
+     * @class Popup
+     * @namespace $cmm
+     */
+    Popup : {
+
+        /**
+         * 팝업 오픈.
+         *
+         * @param {Object} options 팝업 객체
+         * @memberOf $cmm.common.Popup
+         */
+        open : function(options) {
+
+            var url = options.url;
+
+            url = url.replace("/", "$");
+            url = url.replace("/", "/popup/");
+            url = url.replace("$", "/");
+
+            var winl = (screen.width - options.width) / 2;
+            var wint = (screen.height - options.height) / 2;
+
+            var winprops = 'height=' + options.height + ',width=' + options.width + ',top=' + wint + ',left=' + winl +
+                ',toolbar=no, location=no, directories=no, status=yes, menubar=no, resizable=no, scrollbars=no, copyhistory=no';
+
+            var popupName = "";
+
+            if(!!options.name) {
+
+                popupName = options.name;
+
+                // 팝업 파라미터 설정.
+                if(!!options.data) {
+
+                    skebinse.UserVal.popupData[popupName] = JSON.stringify(options.data);
+                } else {
+
+                    skebinse.UserVal.popupData[popupName] = "";
+                }
+
+                // 팝업 콜백함수 설정.
+                if(!!options.callBackFunc) {
+
+                    skebinse.UserVal.popupFunc[popupName] = options.callBackFunc;
+                }
+            }
+
+            window.open(url, popupName, winprops);
+        },
+
+        /**
+         * 부모 팝업에서부터 전달 받은 파라미터.
+         *
+         * @memberOf skebinse.common.Popup
+         * @returns {Object}
+         */
+        getParam : function() {
+
+            var pageId = $sBizCommon.getPageId();
+
+            var returnObj = null;
+
+            // 부모창이 있을 경우
+            if(!!opener) {
+
+                if(!!opener.skebinse.UserVal.popupData[pageId]) {
+
+                    returnObj = JSON.parse(opener.skebinse.UserVal.popupData[pageId]);
+                }
+            }
+
+            return returnObj;
+        },
+
+        /**
+         * 부모 팝업에 파라미터 전달 후 팝업 닫기.
+         *
+         * @memberOf skebinse.common.Popup
+         * @param {Object} returnObj 리턴 객체
+         * @returns {Object}
+         */
+        closeValue : function(returnObj) {
+
+            $sPopup.returnFunc(returnObj);
+
+            // 팝업 닫기.
+            window.close();
+        },
+
+        /**
+         * 부모 팝업에 파라미터 전달.
+         *
+         * @memberOf skebinse.common.Popup
+         * @param {Object} returnObj 리턴 객체
+         * @returns {Object}
+         */
+        returnFunc : function(returnObj) {
+
+            var pageId = $sBizCommon.getPageId();
+
+            // 부모창이 있을 경우
+            if(!!opener) {
+
+                var callbackFunc = opener.skebinse.UserVal.popupFunc[pageId];
+
+                if(!!callbackFunc) {
+
+                    callbackFunc(returnObj);
+                }
+            }
+        }
     },
 
     /**

@@ -115,7 +115,7 @@
           <tr th:each="customer : ${customers}">
             <td th:text="${customer.rownum}"></td>
             <td th:text="${customer.custNo}"></td>
-            <td th:text="${customer.custNm}"><a th:href="@{/getCustomerList}" href="#" data-name="custLink"></a></td>
+            <td th:text="${customer.custNm}"><a th:href="" href="#" data-name="custLink"></a></td>
             <td th:text="${customer.owner}"></td>
             <td th:text="${customer.bizNo}"></td>
             <td th:utext="${customer.comptel} + ' /<br>' +${customer.confirmhp}"></td>

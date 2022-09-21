@@ -6,6 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 public interface CustomerMapper {
+
+    /**
+     * 거래처리스트 조회.
+     * @param param
+     * @return
+     */
     List<Map<String, String>> getCustomerList(Map<String, String> param);
 
     /**

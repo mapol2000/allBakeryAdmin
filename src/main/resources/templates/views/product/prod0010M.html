@@ -1,0 +1,145 @@
+<!--
+/**********************************************************************
+* File Name			: prod0010M.html
+* Description		: 제품리스트
+* Author			: peter
+* --------------------------------------------------------------------
+*    변경NO     변경일자 			변경자	            DESCRIPTION
+* --------------------------------------------------------------------
+*
+**********************************************************************/
+-->
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
+<th:block layout:fragment="content" >
+
+  <section id="contents">
+    <h2>제품리스트</h2>
+
+    <!-- 상단 button 영역 -->
+    <div class="btnTopArea">
+      <div class="btns">
+        <ul>
+          <li><a id="btnAdd" href="javascript:void(0)"><span>추가</span></a></li>
+          <li><a id="btnMod" href="javascript:void(0)"><span>수정</span></a></li>
+          <!-- 				<li><a id="btnDel" href="javascript:void(0)"><span>삭제</span></a></li> -->
+          <li><a href="javascript:void(0)"><span>인쇄</span></a></li>
+        </ul>
+        <a id="btnExcel" href="javascript:void(0)" class="btnExcel"><span>엑셀로다운로드</span></a>
+      </div>
+    </div>
+    <!--// 상단 button 영역 -->
+
+    <form id="frm">
+      <!-- searchArea -->
+      <div class="searchArea">
+        <ul>
+          <li>
+            <label for="prodGrp">
+              <span>제품구분</span>
+<!--              <famTag:select codeGrp="03" eletId="prodGrp" eletName="prodGrp" defaultName="제품구분" eletStyle="width:123px;" />-->
+            </label>
+            <label for="searchKey">
+              <span>제품명 검색</span>
+              <input type="text" id="searchKey" name="searchKey" style="width:123px;" maxlength="20">
+            </label>
+          </li>
+          <li>
+            <label for="useFlag">
+              <span>사용여부</span>
+              <select id="useFlag" name="useFlag" title="사용여부 선택" style="width:123px;">
+                <option value="">--</option>
+                <option value="Y" selected="selected">Y</option>
+                <option value="N">N</option>
+              </select>
+            </label>
+            <label for="bestFlag">
+              <span>베스트</span>
+              <select id="bestFlag" name="bestFlag" title="베스트 선택" style="width:123px;">
+                <option value="">--</option>
+                <option value="Y">Y</option>
+                <option value="N">N</option>
+              </select>
+            </label>
+          </li>
+        </ul>
+        <div class="btnArea">
+          <a id="btnSearch" href="javascript:void(0)" class="btnOrg"><span>검색</span></a>
+        </div>
+      </div>
+      <!--// searchArea -->
+    </form>
+    <form id=bodyFrm>
+      <!-- table -->
+      <div class="tblType01">
+        <table id="prodTable">
+          <caption>제품리스트</caption>
+          <colgroup>
+            <col style="width:4%;">
+            <col style="width:6%;">
+            <col style="width:*;">
+            <col style="width:8%;">
+            <col style="width:5%;">
+            <col style="width:7%;">
+            <col style="width:7%;">
+            <col style="width:7%;">
+            <col style="width:7%;">
+            <col style="width:5%;">
+            <col style="width:5%;">
+            <col style="width:5%;">
+            <col style="width:9%;">
+            <col style="width:5%;">
+            <col style="width:6%;">
+          </colgroup>
+          <thead>
+          <tr>
+            <th scope="col"><input id="chkAll" type="checkbox" title="전체 선택"></th>
+            <th scope="col">제품번호</th>
+            <th scope="col"><a href="javascript:void(0)">제품명</a></th>
+            <th scope="col"><a href="javascript:void(0)">제품분류</a></th>
+            <th scope="col">박스당<br>갯수</th>
+            <th scope="col"><a href="javascript:void(0)">가격A</a></th>
+            <th scope="col"><a href="javascript:void(0)">가격B</a></th>
+            <th scope="col"><a href="javascript:void(0)">가격C</a></th>
+            <th scope="col"><a href="javascript:void(0)">가격D</a></th>
+            <th scope="col">사용<br>여부</th>
+            <th scope="col">세금<br>여부</th>
+            <th scope="col"><a href="javascript:void(0)">베스트</a></th>
+            <th scope="col"><a href="javascript:void(0)">유통구분</a></th>
+            <th scope="col">정렬</th>
+            <th scope="col" class="last">등록자</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr data-component="trTemp" class="none">
+            <td><input type="checkbox" name="prodNo" data-column="prodNo" title="선택"></td>
+            <td><a data-column="prodNo" href="javascript:void(0)" ></a></td>
+            <td data-column="prodKnm" class="al"></td>
+            <td data-column="pgrpnm" class="al"></td>
+            <td data-column="boxCnt"></td>
+            <td data-column="unitPrice" data-format="amt" class="ar"></td>
+            <td data-column="unitPrice2" data-format="amt" class="ar"></td>
+            <td data-column="unitPrice3" data-format="amt" class="ar"></td>
+            <td data-column="unitPrice4" data-format="amt" class="ar"></td>
+            <td data-column="useFlag"></td>
+            <td data-column="taxYn"></td>
+            <td data-column="bestFlag"></td>
+            <td data-column="prodTypeNm"></td>
+            <td data-column="sortSeq"></td>
+            <td data-column="updateId" class="last"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <!--// table -->
+    </form>
+
+
+  </section>
+
+
+</th:block>
+
+
+</html>

@@ -3,6 +3,7 @@ package kr.co.allbakery.common.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import kr.co.allbakery.service.CommonService;
 import kr.co.allbakery.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import kr.co.allbakery.common.session.SessionData;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Controller
@@ -25,6 +27,9 @@ public class PathController {
 
 	@Autowired
 	private CustomerService customerService;
+
+	@Autowired
+	private CommonService commonService;
 
 	/**
 	 * 메인
@@ -64,6 +69,19 @@ public class PathController {
 	}
 
 	/**
+	 * 로그인 처리
+	 *
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/getLogin")
+	public @ResponseBody Map<String, String> getLogin(Locale locale, Model model, HttpServletRequest request, @RequestBody Map<String, String> param) throws Exception {
+
+		System.out.println(request.getHeader("Referer"));
+
+		return commonService.getLogin(request, param);
+	}
+
+	/**
 	 * 페이지
 	 *
 	 * @param model
@@ -78,6 +96,7 @@ public class PathController {
 
 		String screenUrl = folder + "/" + screen;
 		String url = "";
+		int totalCnt;
 
 		model.addAttribute("header", "sub");
 		model.addAttribute("screen", screen);
@@ -90,7 +109,8 @@ public class PathController {
 
 		// 거래처정보 등록
 		// 거래처명 중복 조회.
-		// customerService.getBiacDplc(param);
+		totalCnt = customerService.getBiacDplc(param);
+		model.addAttribute("totalCnt", totalCnt);
 
 		return page(url, request, model);
 	}
@@ -103,7 +123,10 @@ public class PathController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/getBiacDplc", method = RequestMethod.POST)
-	public @ResponseBody int getBiacDplc(@RequestParam Map<String, String> param) throws Exception {
+	public @ResponseBody int getBiacDplc(@RequestParam Map<String, String> param, Model model) throws Exception {
+
+		int totalCnt = customerService.getBiacDplc(param);
+		System.out.println("갯수는 " + totalCnt);
 
 		return customerService.getBiacDplc(param);
 	}

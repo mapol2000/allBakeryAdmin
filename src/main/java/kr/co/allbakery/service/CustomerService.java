@@ -70,9 +70,7 @@ public class CustomerService {
     @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     public int getBiacDplc(Map<String, String> param) throws Exception {
 
-        int totalCnt = customerMapper.getBiacDplc(param);
-
-        return totalCnt;
+        return customerMapper.getBiacDplc(param);
     }
 
 }

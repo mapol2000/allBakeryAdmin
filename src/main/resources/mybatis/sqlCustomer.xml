@@ -105,5 +105,15 @@
         </if>
     </select>
 
+    <!-- 사업자등록번호 중복 조회. -->
+    <select id="getBmrnoDplc" parameterType="Map" resultType="int">
+        SELECT COUNT(*) CNT
+        FROM T_MB_010
+        WHERE BIZ_NO = #{bizNo}
+        <if test="custNo != '' and custNo != null">
+            AND	CUST_NO != #{custNo}
+        </if>
+    </select>
+
 
 </mapper>

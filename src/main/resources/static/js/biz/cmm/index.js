@@ -68,6 +68,8 @@ $(function() {
 
 			screen.c.getDate();
 
+			console.log("index.js 파일 불려짐");
+
 		}
 	};
 

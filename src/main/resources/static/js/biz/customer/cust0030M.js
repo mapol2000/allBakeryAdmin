@@ -29,185 +29,6 @@ $(function() {
         c: {
 
             /**
-             * 거래처 찾기 호출.
-             *
-             * @memberOf cust0030M.c
-             * @param {Object} param 부모창에서 받은 파라미터
-             */
-            getSearchBiac : function(param) {
-
-                var options = {
-                    url : "/getCustomer",
-                    data : {custNo : param.custNo},
-                    success : function(data) {
-
-                        if(!!data.list && data.list.length > 0) {
-
-                            var item = data.list[0];
-                            var $target;
-
-                            for(var key in item) {
-
-                                $target = $("[name=" + key + "]");
-
-                                // id가 있을 경우
-                                if(!$target.isNone()) {
-
-                                    // 라디오 버튼일 경우
-                                    if($target.prop("tagName").toUpperCase() === "INPUT" &&
-                                        $target.attr("type").toUpperCase() === "RADIO") {
-
-                                        if(!!item[key]) {
-
-                                            $("[name=" + key + "][value=" + item[key] + "]").prop("checked", true);
-                                        }
-                                        // 체크박스는 제외.
-                                    } else if($target.prop("tagName").toUpperCase() === "INPUT" &&
-                                        $target.attr("type").toUpperCase() === "CHECKBOX") {
-
-                                    } else {
-
-                                        $target.val(item[key].trim());
-                                    }
-                                }
-                            }
-
-                            // 전자우편
-                            if(!!item.taxEmail) {
-
-                                $("#taxemail").val(item.taxEmail);
-                            }
-                            // 주문자전화번호
-                            if(!!item.orderHP) {
-
-                                $("#orderhp").val(item.orderHP);
-                            }
-                            // 기타연락처
-                            if(!!item.otherTel) {
-
-                                $("#othertel").val(item.otherTel);
-                            }
-                            // 사업장 주소 우편번호
-                            if(!!item.bZipcode) {
-
-                                $("#bZipcode").val(item.bZipcode);
-                            }
-
-                            // 세금적용여부
-                            if(item.appFlag === "") {
-
-                                $("#tdTaxYn").find("div").addClass("none");
-
-                                if(item.taxYn === "Y") {
-
-                                    $("#tdTaxYn").append("예");
-                                } else {
-
-                                    $("#tdTaxYn").append("<strong style='color:red'>아니오</strong>");
-                                }
-                            }
-
-                            // 매점 전화번호
-                            if(!!item.compTel) {
-
-                                var compTel = item.compTel.split("-");
-
-                                $("#compTel").val(compTel[0]);
-                                $("#compTel2").val(compTel[1]);
-                                $("#compTel3").val(compTel[2]);
-                            }
-
-                            // SMS 연락처
-                            if(!!item.confirmHP) {
-
-                                var confirmHP = item.confirmHP.split("-");
-
-                                $("#confirmhp").val(confirmHP[0]);
-                                $("#confirmhp2").val(confirmHP[1]);
-                                $("#confirmhp3").val(confirmHP[2]);
-                            }
-
-                            // 가맹점등록일
-                            if($("#joinDate").val().length > 10) {
-
-                                $("#joinDate").val($("#joinDate").val().substring(0, 10));
-                            }
-
-                            // 배송불가
-                            if(!!item.expressWeek) {
-
-                                var expressWeek = item.expressWeek.split(",");
-                                var expressWeekLen = expressWeek.length;
-
-                                for(var i = 0; i < expressWeekLen; i++) {
-
-                                    if(!!expressWeek[i].trim()) {
-
-                                        $("[name=expressWeek][value=" + expressWeek[i].trim() + "]").prop("checked", true);
-                                    }
-                                }
-                            }
-
-                            // 공휴일 배송불가
-                            if(!item.holiday) {
-
-                                $("#holiday2").prop("checked", true);
-                            }
-
-                            // 최소배송금액 이하주문
-                            if(!item.minOrderYn) {
-
-                                $("#minOrderYn").val("N");
-                            }
-
-                            // 결제구분
-                            if(!!item.acountNo && !item.acountNo.trim()) {
-
-                                $("#acountNo").val("");
-                            }
-
-                            // 본사코드
-                            if(!!item.taxCustNo) {
-
-                                $("#taxCustNo").trigger("keyup");
-                            }
-
-                            // 가맹점등록일
-                            $("#joinDate").val($sDateUtil.getToday("-"));
-                            // 권한
-//							if(!!param.authorize && param.authorize === "Y") {
-//
-//								// 가맹점등록일 오늘 일자로
-//								$("#joinDate").val($sDateUtil.getToday("-"));
-//								// 배송차량 기본값
-//								$("#carType").val("02");
-//								// 승인, 보류, 삭제 버튼 활성화.
-//								$("#btnApv, #btnSspn, #btnDel").removeClass("none");
-//							} else {
-//
-//								// 승인, 보류, 삭제 버튼 삭제.
-//								$("#btnApv, #btnSspn, #btnDel").remove();
-//							}
-
-                            // 본사발행
-                            if(item.hdofIspYn === "Y") {
-
-                                $("#hdofIspYn").prop("checked", true);
-                            }
-                        }
-
-                        // 초기화
-                        // 비밀번호
-                        $("#passwd").val("");
-                        // 사업자비밀번호
-                        $("#bizNo").val("");
-                    }
-                };
-
-                $cmm.ajax(options);
-            },
-
-            /**
              * 거래처명 중복 조회.
              *
              * @memberOf cust0030M.c
@@ -215,17 +36,17 @@ $(function() {
             getBiacDplc : function(page) {
 
                 // validate 체크.
-                if($cmm.util.validate("#custNm")) {
+                // if($cmm.util.validate("#custNm")) {
 
                     var options = {
-                        url : "/getBiacDplc.ax",
+                        url : "/getBiacDplc",
                         data : {
                             custNm : $("#custNm").val()
                         },
                         success : function(data) {
 
                             // 거래처 .
-                            if(data.totalCnt > 0) {
+                            if(data.totoalCnt > 0) {
 
                                 alert('이미 등록된 거래처 명입니다');
                                 $("#custNm").data("nameChecked", "N");
@@ -239,77 +60,8 @@ $(function() {
                     };
 
                     $cmm.ajax(options);
-                }
+                // }
             },
-
-            /**
-             * 사업자등록번호 중복 조회.
-             *
-             * @memberOf cust0030M.c
-             */
-            getBmrnoDplc : function(page) {
-
-                // validate 체크.
-                if($cmm.util.validate("#bizNo")) {
-
-                    var options = {
-                        url : "/getBmrnoDplc",
-                        data : {
-                            bizNo : $("#bizNo").val()
-                        },
-                        success : function(data) {
-
-                            // 거래처 .
-                            if(data.totoalCnt > 0) {
-
-                                alert('이미 등록된 사업자등록번호 입니다');
-                                $("#bizNo").data("nameChecked", "N");
-                                $("#bizNo").focus();
-                            } else {
-
-                                alert('사용가능한 사업자등록번호 입니다');
-                                $("#bizNo").data("nameChecked", "Y");
-                            }
-                        }
-                    };
-
-                    $cmm.ajax(options);
-                }
-            },
-
-            /**
-             * 거래처 등록 호출.
-             *
-             * @memberOf cust0030M.c
-             */
-            insBiac : function() {
-
-                if($('#stdoCd').isEmpty()) {
-                    alert('배송지 주소 우편번호를 다시한번 찾아주세요.');
-                    return;
-                }
-
-
-                var options = {
-
-                    url : "/insBiac",
-                    formData : $("#frm").serialize(),
-                    success : function(data) {
-
-                        if($("#prevCustNo").isNotEmpty()) {
-
-                            alert("저장 되었습니다.");
-                            window.close();
-                        } else {
-
-                            // 거래처리스트로 이동
-                            location.href = contextPath + "/customer/cust0010M";
-                        }
-                    }
-                };
-
-                $cmm.ajax(options);
-            }
 
         },
 
@@ -319,44 +71,6 @@ $(function() {
          * @memberOf screen
          */
         f: {
-
-            /**
-             * 입력 validate.
-             *
-             * @memberOf cust0030M.f
-             * @return boolean
-             */
-            validateIns : function() {
-
-                // 비밀번호 체크
-                $cmm.util.checkSmEngNum()
-                if(!$cmm.util.checkSmEngNum($("#passwd").val())) {
-
-                    alert("비밀번호는 영문(소문자)과 숫자만을 조합하여 사용할 수 있습니다.");
-                    $("#passwd").focus();
-                    return false;
-                    // 이메일 체크
-                } else if(!$("#email").isEmpty() && !$cmm.util.checkMail($("#email").val())) {
-
-                    alert("세금계산서 E-mail을 정확히 입력해 주십시오.");
-                    $("#email").focus();
-                    return false;
-                    // 거래처명 중복 체크
-                } else if($("#custNm").data("nameChecked") !== "Y") {
-
-                    alert("거래처 명 중복체크를 하시기 바랍니다.");
-                    $("#custNm").next().focus();
-                    return false;
-                    // 사업자등록번호 중복 체크
-                } else if($("#bizNo").data("nameChecked") !== "Y") {
-
-                    alert("사업자등록번호 중복체크를 하시기 바랍니다.");
-                    $("#bizNo").next().focus();
-                    return false;
-                }
-
-                return true;
-            }
 
         },
 

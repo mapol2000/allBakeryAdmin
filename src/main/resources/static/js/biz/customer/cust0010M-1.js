@@ -102,8 +102,6 @@ $(function() {
             // 거래처명 클릭
             $("#custTable").find("tbody").on("click", "a[data-name=custLink]", function() {
 
-                console.log("거래처명 클릭");
-
                 var item = $(this).parents("tr").data();
 
                 var options = {
